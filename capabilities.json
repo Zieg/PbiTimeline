@@ -1,0 +1,113 @@
+{
+  "dataRoles": [
+    {
+      "displayName": "Tweet",
+      "name": "tweet",
+      "kind": "GroupingOrMeasure"
+    }
+  ],
+  "objects": {
+    "columnOptions": {
+      "displayName": "Column mapping",
+      "properties": {
+        "fieldType": {
+          "displayName": "Field mapping",
+          "type": {
+            "enumeration": [
+              {
+                "value": "notMapped",
+                "displayName": "Not mapped"
+              },
+              {
+                "value": "authorName",
+                "displayName": "Author name"
+              },
+              {
+                "value": "authorScreenName",
+                "displayName": "Author screen name"
+              },
+              {
+                "value": "authorProfilePicture",
+                "displayName": "Author profile picture"
+              },
+              {
+                "value": "tweetDate",
+                "displayName": "Tweet date"
+              },
+              {
+                "value": "tweetText",
+                "displayName": "Tweet text"
+              },
+              {
+                "value": "tweetJson",
+                "displayName": "Tweet JSON"
+              },
+              {
+                "value": "likes",
+                "displayName": "Likes"
+              },
+              {
+                "value": "retweets",
+                "displayName": "Retweets"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "tweetOptions": {
+      "displayName": "Display",
+      "properties": {
+        "showMedia": {
+          "displayName": "Media",
+          "type": {
+            "bool": true
+          }
+        },
+        "showQuoted": {
+          "displayName": "Quoted tweets",
+          "type": {
+            "bool": true
+          }
+        }
+      }
+    },
+    "formatting": {
+      "displayName": "Formatting",
+      "properties": {
+        "fontSize": {
+          "displayName": "Font size",
+          "type": {
+            "integer": true
+          }
+        }
+      }
+    }
+  },
+  "dataViewMappings": [
+    {
+      "conditions": [
+        {
+          "tweet": {
+            "min": 0
+          }
+        }
+      ],
+      "table": { 
+        "rows": { 
+          "for": { 
+            "in": "tweet" 
+            },
+            "dataReductionAlgorithm": {
+              "top": {
+                "count": 5000
+              }
+            }
+          } 
+      }
+    }
+  ],
+  "sorting": {
+    "default": {}
+  }
+}

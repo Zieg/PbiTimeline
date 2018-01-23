@@ -1,0 +1,26 @@
+{
+  "visual": {
+    "name": "timeline",
+    "displayName": "Timeline",
+    "guid": "tweetlistEC3257599B0A40D19C16301EC2109CDE",
+    "visualClassName": "Visual",
+    "version": "1.0.0",
+    "description": "A visualization of the Twitter timeline",
+    "supportUrl": "https://www.cloudscope.io/support/timeline",
+    "gitHubUrl": "https://github.com/chriswill/PbiTimeline"
+  },
+  "apiVersion": "1.7.0",
+  "author": {
+    "name": "CloudScope, LLC",
+    "email": "info@cloudscope.io"
+  },
+  "assets": {
+    "icon": "assets/icon.png"
+  },
+  "externalJS": [
+  ],
+  "style": "style/visual.less",
+  "capabilities": "capabilities.json",
+  "dependencies": "dependencies.json",
+  "stringResources": []
+}
