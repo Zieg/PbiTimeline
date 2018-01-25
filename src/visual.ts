@@ -95,6 +95,8 @@ module powerbi.extensibility.visual {
             let likesColumn = this.getColumnIndex(columns, "likes");
             let retweetsColumn = this.getColumnIndex(columns, "retweets");
 
+            let isDeskTop : boolean = window.location.hostname === "pbi.microsoft.com";
+
             for (let i = 0; i < rows.length; i++) {
                 let row : DataViewTableRow = rows[i];
                 let selectionId : ISelectionId = selectionIds[i];
@@ -335,64 +337,76 @@ module powerbi.extensibility.visual {
                             img.setAttribute("alt", "");
                             img.setAttribute("src", tweet.media[0].url);
                             singleContainer.appendChild(img);
-                        } else {                               
-                            let video = document.createElement("video");  
-                            let duration: number = null;                            
-                            let currentTime: number = null;
-                            video.setAttribute("class", "video-player")                                                              
-                            video.setAttribute("poster", mediaItem.url);
-                            video.setAttribute("preload", "metadata");
-
-                            let progress = document.createElement("progress")
-                            progress.value = 0;
-
-                            let videoInfo = document.createElement("div");
-                            videoInfo.setAttribute("class", "info play");
-
-                            let controls = document.createElement("div");
-                            controls.setAttribute("class", "controls hide");
-                            
-                            singleContainer.onclick = (ev: MouseEvent) => {                                
-                                if (video.paused) {
-                                    video.play();
-                                    videoInfo.classList.add("pause");
-                                    videoInfo.classList.remove("play");
-                                } else {
-                                    video.pause();
-                                    videoInfo.classList.remove("pause");
-                                    videoInfo.classList.add("play");                   
+                            this.setclick(singleContainer, selectionId, tweetContainer);
+                        } else {                                     
+                            if (!isDeskTop){
+                                let video = document.createElement("video");  
+                                let duration: number = null;                            
+                                let currentTime: number = null;
+                                video.setAttribute("class", "video-player")                                                              
+                                video.setAttribute("poster", mediaItem.url);
+                                video.setAttribute("preload", "metadata");
+    
+                                let progress = document.createElement("progress")
+                                progress.value = 0;
+    
+                                let videoInfo = document.createElement("div");
+                                videoInfo.setAttribute("class", "info play");
+                                videoInfo.innerText = "loading..."
+    
+                                let controls = document.createElement("div");
+                                controls.setAttribute("class", "controls hide");
+                                
+                                singleContainer.onclick = (ev: MouseEvent) => {                                
+                                    if (video.paused) {
+                                        video.play();
+                                        videoInfo.classList.add("pause");
+                                        videoInfo.classList.remove("play");
+                                    } else {
+                                        video.pause();
+                                        videoInfo.classList.remove("pause");
+                                        videoInfo.classList.add("play");                   
+                                    }
+                                }; 
+    
+                                video.onloadedmetadata = (ev: Event) => {
+                                    duration = video.duration;
+                                    videoInfo.innerText = this.toFormattedTime(duration);
+                                    progress.max = video.duration;                                
+                                };
+    
+                                video.ontimeupdate = (ev: Event) => {                                
+                                    currentTime = video.currentTime;                                  
+                                    videoInfo.innerText = this.toFormattedTime(currentTime) + " / " + this.toFormattedTime(duration);
+                                    progress.value = video.currentTime;
                                 }
-                            }; 
-
-                            video.onloadedmetadata = (ev: Event) => {
-                                duration = video.duration;
-                                videoInfo.innerText = this.toFormattedTime(duration);
-                                progress.max = video.duration;                                
-                            };
-
-                            video.ontimeupdate = (ev: Event) => {                                
-                                currentTime = video.currentTime;                                  
-                                videoInfo.innerText = this.toFormattedTime(currentTime) + " / " + this.toFormattedTime(duration);
-                                progress.value = video.currentTime;
-                            }
-
-                            singleContainer.onmouseenter = (ev:MouseEvent) => {
-                                controls.classList.remove("hide");                                
-
-                            };
-                            singleContainer.onmouseleave = (ev: MouseEvent)=> {
-                                controls.classList.add("hide");
-                            };                            
-
-                            let source = document.createElement("source");
-                            source.setAttribute("src", mediaItem.videoUrl);
-                            source.setAttribute("type", "video/mp4");
-                            video.appendChild(source);      
-                                                       
-                            singleContainer.appendChild(video);       
-                            controls.appendChild(progress);
-                            controls.appendChild(videoInfo);
-                            singleContainer.appendChild(controls);                      
+    
+                                singleContainer.onmouseenter = (ev:MouseEvent) => {
+                                    controls.classList.remove("hide");                                
+    
+                                };
+                                singleContainer.onmouseleave = (ev: MouseEvent)=> {
+                                    controls.classList.add("hide");
+                                };                            
+    
+                                let source = document.createElement("source");
+                                source.setAttribute("src", mediaItem.videoUrl);
+                                source.setAttribute("type", "video/mp4");
+                                video.appendChild(source);      
+                                                           
+                                singleContainer.appendChild(video);       
+                                controls.appendChild(progress);
+                                controls.appendChild(videoInfo);
+                                singleContainer.appendChild(controls); 
+                            } else {
+                                if (mediaItem.url){
+                                    let img = document.createElement("img");                                    
+                                    img.setAttribute("alt", "");
+                                    img.setAttribute("src", mediaItem.url);
+                                    singleContainer.appendChild(img);
+                                    this.setclick(singleContainer, selectionId, tweetContainer);
+                                }                                
+                            }                                                 
                         }
                         
                         mediaContainer.appendChild(singleContainer);
