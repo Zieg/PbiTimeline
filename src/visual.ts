@@ -145,8 +145,13 @@ module powerbi.extensibility.visual {
                     let img = document.createElement("img");
                     img.setAttribute("alt", "");
                     img.setAttribute("class", "author-photo");
-                    if (tweet != null)
-                        img.setAttribute("src", tweet.authorProfileImageUrl);
+                    if (tweet != null){
+                        if (tweet.retweetedTweet){
+                            img.setAttribute("src", tweet.retweetedTweet.authorProfileImageUrl);
+                        } else {
+                            img.setAttribute("src", tweet.authorProfileImageUrl);
+                        }                        
+                    }                        
                     else 
                         img.setAttribute("src", row[imageColumn].toString());
                     tweetContentContainer.appendChild(img);
@@ -159,7 +164,12 @@ module powerbi.extensibility.visual {
                         nameDiv.setAttribute("class", "author-name");
                         var strong = document.createElement("strong")
                         if (tweet != null){
-                            strong.appendChild(document.createTextNode(tweet.authorName));
+                            if (tweet.retweetedTweet){
+                                strong.appendChild(document.createTextNode(tweet.retweetedTweet.authorName));
+                            } else {
+                                strong.appendChild(document.createTextNode(tweet.authorName));
+                            }
+                            
                         } else {
                             if (row[nameColumn] != null){
                                 strong.appendChild(document.createTextNode(row[nameColumn].toString()));
@@ -172,7 +182,7 @@ module powerbi.extensibility.visual {
                     
                     let verified: boolean = false;
                     if (tweet != null){
-                        if (tweet.isRetweet) {
+                        if (tweet.retweetedTweet) {
                             verified = tweet.retweetedTweet.authorVerified;
                         } else {
                             verified = tweet.authorVerified;
@@ -193,7 +203,12 @@ module powerbi.extensibility.visual {
                         
                         let screenNameVal :string = "";
                         if (tweet != null){
-                            screenNameVal = tweet.authorScreenName;
+                            if (tweet.retweetedTweet){
+                                screenNameVal = tweet.retweetedTweet.authorScreenName;
+                            } else {
+                                screenNameVal = tweet.authorScreenName;
+                            }
+                            
                         } else {
                             screenNameVal = row[screenNameColumn].toString();
                         }
@@ -214,7 +229,7 @@ module powerbi.extensibility.visual {
                         let tweetDate: Date = new Date();
 
                         if (tweet != null){
-                            if (tweet.isRetweet){                                                
+                            if (tweet.retweetedTweet){                                                
                                 tweetDate = new Date(tweet.retweetedTweet.createdDateUTC);
                             } else {
                                 tweetDate = new Date(tweet.createdDateUTC);
@@ -243,7 +258,7 @@ module powerbi.extensibility.visual {
                 tweetDiv.setAttribute("style", `font-size: ${this.settings.formatOptions.fontSize}px;`);
 
                 if (tweet != null){
-                    if (tweet.isRetweet){                    
+                    if (tweet.retweetedTweet){                    
                         tweetDiv.innerHTML = tweet.retweetedTweet.text;
                     } else {
                         tweetDiv.innerHTML = tweet.text;
@@ -256,7 +271,7 @@ module powerbi.extensibility.visual {
 
                 tweetContentContainer.appendChild(tweetDiv);
 
-                if (tweet != null && tweet.quotedTweet !== null){
+                if (tweet != null && tweet.quotedTweet !== null) {
                     
                     let quoteTweetContainer = document.createElement("div");
 
