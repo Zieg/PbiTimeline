@@ -242,7 +242,7 @@ module powerbi.extensibility.visual {
                                 tweetDate = new Date(row[dateColumn].toString());
                         }
                         
-                        dateDiv.innerHTML = "&nbsp;&bull;&nbsp;" + this.formatDate(tweetDate);
+                        dateDiv.appendChild(document.createTextNode("&nbsp;&bull;&nbsp;" + this.formatDate(tweetDate)));                        
                         
                         tweetHeader.appendChild(dateDiv);
                     }
@@ -273,7 +273,7 @@ module powerbi.extensibility.visual {
                     tweetText = row[textColumn].toString();
                 }
 
-                tweetDiv.innerHTML = this.htmlEscape(tweetText);
+                tweetDiv.appendChild(document.createTextNode(this.htmlEscape(tweetText)));                
                                 
                 this.setclick(tweetDiv, selectionId, tweetContainer);
 
@@ -332,11 +332,11 @@ module powerbi.extensibility.visual {
                     quoteAddressLine.appendChild(screenNameDiv);
                     quoteTweet.appendChild(quoteAddressLine);
 
-                    let quotedTweet = document.createElement("div");
-                    quotedTweet.setAttribute("class", "tweet-text");
-                    quotedTweet.setAttribute("style", `font-size: ${this.settings.formatOptions.fontSize}px;`);
-                    quotedTweet.innerHTML = tweet.quotedTweet.text;
-                    quoteTweet.appendChild(quotedTweet);
+                    let quotedTweetElement = document.createElement("div");
+                    quotedTweetElement.setAttribute("class", "tweet-text");
+                    quotedTweetElement.setAttribute("style", `font-size: ${this.settings.formatOptions.fontSize}px;`);
+                    quotedTweetElement.appendChild(document.createTextNode(tweet.quoteTweet.text));                    
+                    quoteTweet.appendChild(quotedTweetElement);
                     
                     tweetContentContainer.appendChild(tweetDiv);
 
