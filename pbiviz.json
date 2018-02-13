@@ -4,7 +4,7 @@
     "displayName": "Timeline",
     "guid": "tweetlistEC3257599B0A40D19C16301EC2109CDE",
     "visualClassName": "Visual",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "A visualization of the Twitter timeline",
     "supportUrl": "https://www.cloudscope.io/support/timeline",
     "gitHubUrl": "https://github.com/chriswill/PbiTimeline"

@@ -40,7 +40,7 @@
               },
               {
                 "value": "tweetJson",
-                "displayName": "Tweet JSON"
+                "displayName": "Tweet Json"
               },
               {
                 "value": "likes",
@@ -49,6 +49,10 @@
               {
                 "value": "retweets",
                 "displayName": "Retweets"
+              },
+              {
+                "value": "sentiment",
+                "displayName": "Sentiment"
               }
             ]
           }
