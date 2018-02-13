@@ -751,8 +751,7 @@ module powerbi.extensibility.visual {
                             if (property === columnType)
                                 return i;
                         }
-                    }
-    
+                    }    
                 }
                 return null;
             }
