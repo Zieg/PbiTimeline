@@ -1,0 +1,23 @@
+{
+    "locale": "en-US",
+    "values": {
+        "dataTweetFields": "Tweet fields",
+        "columnNotMapped": "Not mapped",
+        "columnAuthorName": "Author name",
+        "columnAuthorScreenName": "Author screen name",
+        "columnAuthorProfilePicture": "Author profile picture",
+        "columnTweetDate": "Tweet date",
+        "columnTweetText": "Tweet text",
+        "columnTweetJson": "Tweet Json",
+        "columnLikes": "Likes",
+        "columnRetweets": "Retweets",
+        "columnSentiment": "Sentiment",
+        "optionsDisplay": "Display",
+        "optionsMedia": "Media",
+        "optionsQuotedTweets": "Quoted tweets",        
+        "optionsMapping": "Column mapping",
+        "objectsFieldMapping" : "Field mapping",
+        "optionsFormatting": "Formatting",
+        "optionsFontSize": "Font size"
+    }
+}

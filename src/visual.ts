@@ -106,9 +106,7 @@ module powerbi.extensibility.visual {
             let isDeskTop : boolean = window.location.hostname === "pbi.microsoft.com";
 
             for (let i = 0; i < rows.length; i++) {
-
-
-                try{
+                try {
                     let row : DataViewTableRow = rows[i];
                     let selectionId : ISelectionId = selectionIds[i];
                     
@@ -136,7 +134,7 @@ module powerbi.extensibility.visual {
                         let contextText = document.createElement("div");
                         contextText.setAttribute("class", "context-text");
                         contextText.setAttribute("style", `font-size: ${this.settings.formatOptions.fontSize}px;`);
-                        contextText.appendChild(document.createTextNode("retweeted by " + this.htmlEscape(tweet.authorName)));
+                        contextText.appendChild(document.createTextNode("retweeted by " + tweet.authorName));
                         actionContext.appendChild(contextText);
                         
                         retweetContainer.appendChild(actionContext);
@@ -190,7 +188,7 @@ module powerbi.extensibility.visual {
                                     name = row[nameColumn].toString();
                                 }                        
                             }
-                            strong.appendChild(document.createTextNode(this.htmlEscape(name)));
+                            strong.appendChild(document.createTextNode(name));
                             nameDiv.appendChild(strong);
                             tweetHeader.appendChild(nameDiv);
                         }
@@ -233,7 +231,7 @@ module powerbi.extensibility.visual {
                                 screenNameVal = "@" + screenNameVal;
                             } 
                             
-                            screenNameDiv.appendChild(document.createTextNode(this.htmlEscape(screenNameVal)));
+                            screenNameDiv.appendChild(document.createTextNode(screenNameVal));
                             tweetHeader.appendChild(screenNameDiv);
                         }
     
@@ -265,7 +263,7 @@ module powerbi.extensibility.visual {
                         let replyDiv = document.createElement("div");
                         replyDiv.setAttribute("class", "in-reply-text");
                         replyDiv.setAttribute("style", `font-size: ${this.settings.formatOptions.fontSize}px;`);    
-                        replyDiv.appendChild(document.createTextNode("Replying to @" + this.htmlEscape(tweet.replyToScreenName)));
+                        replyDiv.appendChild(document.createTextNode("Replying to @" + tweet.replyToScreenName));
                         tweetContentContainer.appendChild(replyDiv);
                     }
     
@@ -285,7 +283,7 @@ module powerbi.extensibility.visual {
                         tweetText = row[textColumn].toString();
                     }
     
-                    tweetDiv.appendChild(document.createTextNode(this.htmlEscape(tweetText)));                
+                    tweetDiv.appendChild(document.createTextNode(tweetText));                
                                     
                     this.setclick(tweetDiv, selectionId, tweetContainer);
     
@@ -329,7 +327,7 @@ module powerbi.extensibility.visual {
                         nameDiv.setAttribute("class", "author-name");
                         var strong = document.createElement("strong");
                         
-                        strong.appendChild(document.createTextNode(this.htmlEscape(tweet.quotedTweet.authorName)))
+                        strong.appendChild(document.createTextNode(tweet.quotedTweet.authorName));
                         nameDiv.appendChild(strong);
                         quoteAddressLine.appendChild(nameDiv);
     
@@ -341,7 +339,7 @@ module powerbi.extensibility.visual {
     
                         let screenNameDiv = document.createElement("div");
                         screenNameDiv.setAttribute("class", "screen-name");
-                        screenNameDiv.appendChild(document.createTextNode("@" + this.htmlEscape(tweet.quotedTweet.authorScreenName)));
+                        screenNameDiv.appendChild(document.createTextNode("@" + tweet.quotedTweet.authorScreenName));
     
                         quoteAddressLine.appendChild(screenNameDiv);
                         quoteTweet.appendChild(quoteAddressLine);
@@ -510,7 +508,7 @@ module powerbi.extensibility.visual {
                         div.setAttribute("class", "footer-value");    
                         if (sentimentColumn != null) {
                             if (row[sentimentColumn] != null){
-                                let number = parseFloat(row[sentimentColumn].toString());                            
+                                let number = parseInt(row[sentimentColumn].toString());                            
                                 if (number < 0.4){
                                     divBg.classList.add("negative");
                                 } else if (number > 0.6){
@@ -518,7 +516,7 @@ module powerbi.extensibility.visual {
                                 } else {
                                     divBg.classList.add("neutral");
                                 }
-                                div.appendChild(document.createTextNode(number.toFixed(2)));
+                                div.appendChild(document.createTextNode(number.toFixed(0)));
                             } else {
                                 div.appendChild(document.createTextNode(""));
                             }                        

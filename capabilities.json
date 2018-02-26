@@ -1,7 +1,8 @@
 {
   "dataRoles": [
     {
-      "displayName": "Tweet",
+      "displayName": "Tweet fields",
+      "displayNameKey": "dataTweetFields",
       "name": "tweet",
       "kind": "GroupingOrMeasure"
     }
@@ -9,50 +10,62 @@
   "objects": {
     "columnOptions": {
       "displayName": "Column mapping",
+      "displayNameKey": "optionsMapping",
       "properties": {
         "fieldType": {
           "displayName": "Field mapping",
+          "displayNameKey": "objectsFieldMapping",
           "type": {
             "enumeration": [
               {
                 "value": "notMapped",
-                "displayName": "Not mapped"
+                "displayName": "Not mapped",
+                "displayNameKey": "columnNotMapped"
               },
               {
                 "value": "authorName",
-                "displayName": "Author name"
+                "displayName": "Author name",
+                "displayNameKey": "columnAuthorName"
               },
               {
                 "value": "authorScreenName",
-                "displayName": "Author screen name"
+                "displayName": "Author screen name",
+                "displayNameKey": "columnAuthorScreenName"
               },
               {
                 "value": "authorProfilePicture",
-                "displayName": "Author profile picture"
+                "displayName": "Author profile picture",
+                "displayNameKey": "columnAuthorProfilePicture"
               },
               {
                 "value": "tweetDate",
-                "displayName": "Tweet date"
+                "displayName": "Tweet date",
+                "displayNameKey": "columnTweetDate"
               },
               {
                 "value": "tweetText",
-                "displayName": "Tweet text"
+                "displayName": "Tweet text",
+                "displayNameKey": "columnTweetText"
               },
               {
                 "value": "tweetJson",
-                "displayName": "Tweet Json"
+                "displayName": "Tweet Json",
+                "displayNameKey": "columnTweetJson"
               },
               {
                 "value": "likes",
-                "displayName": "Likes"
+                "displayName": "Likes",
+                "displayNameKey": "columnLikes"
               },
               {
                 "value": "retweets",
-                "displayName": "Retweets"
+                "displayName": "Retweets",
+                "displayNameKey": "columnRetweets"
               },
               {
                 "value": "sentiment",
-                "displayName": "Sentiment"
+                "displayName": "Sentiment",
+                "displayNameKey": "columnSentiment"
               }
             ]
           }
@@ -61,15 +74,18 @@
     },
     "tweetOptions": {
       "displayName": "Display",
+      "descriptionKey": "optionsDisplay",
       "properties": {
         "showMedia": {
           "displayName": "Media",
+          "displayNameKey": "optionsMedia",
           "type": {
             "bool": true
           }
         },
         "showQuoted": {
           "displayName": "Quoted tweets",
+          "displayNameKey": "optionsQuotedTweets",
           "type": {
             "bool": true
           }
@@ -78,9 +94,11 @@
     },
     "formatting": {
       "displayName": "Formatting",
+      "displayNameKey": "optionsFormatting",
       "properties": {
         "fontSize": {
           "displayName": "Font size",
+          "displayNameKey": "optionsFontSize",
           "type": {
             "integer": true
           }
