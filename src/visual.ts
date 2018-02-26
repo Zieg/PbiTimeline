@@ -509,9 +509,9 @@ module powerbi.extensibility.visual {
                         if (sentimentColumn != null) {
                             if (row[sentimentColumn] != null){
                                 let number = parseInt(row[sentimentColumn].toString());                            
-                                if (number < 0.4){
+                                if (number < 40){
                                     divBg.classList.add("negative");
-                                } else if (number > 0.6){
+                                } else if (number > 60){
                                     divBg.classList.add("positive");
                                 } else {
                                     divBg.classList.add("neutral");
