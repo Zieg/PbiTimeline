@@ -157,13 +157,13 @@ module powerbi.extensibility.visual {
                         img.setAttribute("class", "author-photo");
                         if (tweet != null){
                             if (tweet.retweetedTweet){
-                                img.setAttribute("src", encodeURI(tweet.retweetedTweet.authorProfileImageUrl));
+                                img.setAttribute("src", tweet.retweetedTweet.authorProfileImageUrl);
                             } else {
-                                img.setAttribute("src", encodeURI(tweet.authorProfileImageUrl));
+                                img.setAttribute("src", tweet.authorProfileImageUrl);
                             }                        
                         }                        
                         else 
-                            img.setAttribute("src", encodeURI(row[imageColumn].toString()));
+                            img.setAttribute("src", row[imageColumn].toString());
                         tweetContentContainer.appendChild(img);
                     }
                     
@@ -308,7 +308,7 @@ module powerbi.extensibility.visual {
     
                             let quoteTweetImg = document.createElement("img");
                             quoteTweetImg.setAttribute("alt", "");
-                            quoteTweetImg.setAttribute("src", encodeURI(tweet.quotedTweet.media[0].url));
+                            quoteTweetImg.setAttribute("src", tweet.quotedTweet.media[0].url);
                             quoteTweetImg.setAttribute("style", "height:100%;");
                             quotedTweetSingleMedia.appendChild(quoteTweetImg);
     
@@ -370,7 +370,7 @@ module powerbi.extensibility.visual {
                             if (mediaItem.videoUrl === null){
                                 let img = document.createElement("img");
                                 img.setAttribute("alt", "");
-                                img.setAttribute("src", encodeURI(tweet.media[0].url));
+                                img.setAttribute("src", tweet.media[0].url);
                                 singleContainer.appendChild(img);
                                 this.setclick(singleContainer, selectionId, tweetContainer);
                             } else {                                     
@@ -379,7 +379,7 @@ module powerbi.extensibility.visual {
                                     let duration: number = null;                            
                                     let currentTime: number = null;
                                     video.setAttribute("class", "video-player")                                                              
-                                    video.setAttribute("poster", encodeURI(mediaItem.url));
+                                    video.setAttribute("poster", mediaItem.url);
                                     video.setAttribute("preload", "metadata");
         
                                     let progress = document.createElement("progress")
@@ -425,7 +425,7 @@ module powerbi.extensibility.visual {
                                     };                            
         
                                     let source = document.createElement("source");
-                                    source.setAttribute("src", encodeURI(mediaItem.videoUrl));
+                                    source.setAttribute("src", mediaItem.videoUrl);
                                     source.setAttribute("type", "video/mp4");
                                     video.appendChild(source);      
                                                                
@@ -437,7 +437,7 @@ module powerbi.extensibility.visual {
                                     if (mediaItem.url){
                                         let img = document.createElement("img");                                    
                                         img.setAttribute("alt", "");
-                                        img.setAttribute("src", encodeURI(mediaItem.url));
+                                        img.setAttribute("src", mediaItem.url);
                                         singleContainer.appendChild(img);
                                         this.setclick(singleContainer, selectionId, tweetContainer);
                                     }                                
