@@ -1267,6 +1267,7 @@ declare module powerbi.extensibility {
         clear(): IPromise<{}>;
         getSelectionIds(): ISelectionId[];
         applySelectionFilter(): void;
+        registerOnSelectCallback(callback: (ids: ISelectionId[]) => void): void;
     }
 }
 
@@ -1353,9 +1354,8 @@ declare module powerbi {
 }
 
 /**
- * Change Log Version 1.10.0
- * Added ILocalizationManager
- * Added authenticationService
+ * Change Log Version 1.11.0
+ * Added `selectionManager.registerOnSelectCallback()` method for Report Bookmarks support
  */
 
 declare module powerbi.extensibility.visual {

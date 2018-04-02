@@ -9,10 +9,10 @@
     "supportUrl": "https://www.cloudscope.io/support/timeline",
     "gitHubUrl": "https://github.com/chriswill/PbiTimeline"
   },
-  "apiVersion": "1.10.0",
+  "apiVersion": "1.11.0",
   "author": {
     "name": "CloudScope, LLC",
-    "email": "info@cloudscope.io"
+    "email": "support@cloudscope.io"
   },
   "assets": {
     "icon": "assets/icon.png"
@@ -21,5 +21,7 @@
   "style": "style/visual.less",
   "capabilities": "capabilities.json",
   "dependencies": "dependencies.json",
-  "stringResources": ["stringResources/en-US.json"]
+  "stringResources": [
+    "stringResources/en-US.json"
+  ]
 }

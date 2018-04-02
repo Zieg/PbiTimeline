@@ -86,7 +86,7 @@
         "showQuoted": {
           "displayName": "Quoted tweets",
           "displayNameKey": "optionsQuotedTweets",
-          "type": {
+          "type": {            
             "bool": true
           }
         }

@@ -1,5 +1,8 @@
 {
   "name": "visual",
+  "license": "Apache-2.0",
   "dependencies": {  
-  }
+  },
+  "repository": "github:chriswill/PbiTimeline",
+  "version": "1.0.7"
 }
