@@ -73,8 +73,7 @@ module powerbi.extensibility.visual {
             this.currentSelected = [];
             this.tweets = [];
             
-            this.selectionManager.registerOnSelectCallback((ids: ISelectionId[]) => {   
-                    console.log("onSelectionCallback");
+            this.selectionManager.registerOnSelectCallback((ids: ISelectionId[]) => {                       
                     this.currentSelected = ids;                    
                 }
             );                           
