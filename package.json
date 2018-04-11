@@ -1,7 +1,8 @@
 {
   "name": "visual",
   "license": "Apache-2.0",
-  "dependencies": {  
+  "dependencies": {      
+    "powerbi-visuals-utils-dataviewutils": "^1.4.0"
   },
   "repository": "github:chriswill/PbiTimeline",
   "version": "1.0.7"

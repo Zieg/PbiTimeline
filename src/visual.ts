@@ -1,6 +1,7 @@
 module powerbi.extensibility.visual { 
     
     import ISelectionId = powerbi.visuals.ISelectionId;
+    import DataViewObject = powerbi.extensibility.utils.dataview.DataViewObject;
             
     interface ITweetListSettings {
         displayOptions: {
@@ -10,21 +11,7 @@ module powerbi.extensibility.visual {
         formatOptions: {
             fontSize: number;
         }
-    }
-
-    class TextColor implements Fill {
-        solid?: {
-            color?: string;
-        };
-        gradient?: {
-            startColor?: string;
-            endColor?: string;
-        };
-        pattern?: {
-            patternKind?: string;
-            color?: string;
-        };
-    }
+    }    
 
     interface ITweet {
         image: string;
@@ -783,21 +770,13 @@ module powerbi.extensibility.visual {
         }
 
         private getFillColorByPropertyName(objects: DataViewObjects, objectName: string, propertyName: string, defaultColor?: string): string {
-            if (objects) {
-                let object = objects[objectName];
-                if (object) {
-                    let textColor : TextColor = new TextColor();
-                    textColor.solid.color = defaultColor;
-
-                    let value: Fill = this.getValueFromObject<Fill>(object, objectName, propertyName, textColor);
-                    if (!value || !value.solid) {
-                        return defaultColor;
-                    }
-
-                    return value.solid.color;
-                }
+            let value: Fill;
+            value = DataViewObject.getValue(objects, propertyName);
+            if (!value || !value.solid) {
+                return defaultColor;
             }
-            return defaultColor;
+
+            return value.solid.color; 
         }
 
         private getColumnIndex(columns: DataViewMetadataColumn[], columnType: string): number {
