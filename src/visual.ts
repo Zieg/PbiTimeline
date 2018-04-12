@@ -61,7 +61,14 @@ module powerbi.extensibility.visual {
             this.tweets = [];
             
             this.selectionManager.registerOnSelectCallback((ids: ISelectionId[]) => {                       
-                    this.currentSelected = ids;                    
+                    this.currentSelected = ids;    
+                    
+                    for (let index = 0; index < this.tweets.length; index++) {
+                        const user = this.tweets[index];
+                        user.selected = this.isSelectionIdInArray(ids, user.selectionId);                    
+                    }
+    
+                    this.createView();                    
                 }
             );                           
         }
@@ -253,7 +260,8 @@ module powerbi.extensibility.visual {
         }
         
 
-        private createView(): void {                      
+        private createView(): void {          
+
             while (this.target.firstChild) {
                 this.target.removeChild(this.target.firstChild);
             };
@@ -283,7 +291,7 @@ module powerbi.extensibility.visual {
                                     items[k].classList.add("dim");
                                 }
                                 tweetContainer.classList.remove("dim");
-                                this.currentSelected.push(tweet.selectionId);
+                                this.currentSelected = [tweet.selectionId];
                             }
                             else {
                                 for (let k = 0; k < items.length; k++) {
