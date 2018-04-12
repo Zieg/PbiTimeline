@@ -139,11 +139,8 @@ module powerbi.extensibility.visual {
 
                 let tweet: ITweet = new Tweet();                
                 tweet.selectionId = this.selectionIds[index];
-
-                if (this.isSelectionIdInArray(this.currentSelected, tweet.selectionId)){
-                    tweet.selected = true;
-                }
-
+                tweet.selected = (this.isSelectionIdInArray(this.currentSelected, tweet.selectionId));
+                
                 if (jsonColumn && row[jsonColumn] != null){                    
                     tweet.tweetJson = JSON.parse(row[jsonColumn].toString());
                 }                
@@ -283,8 +280,7 @@ module powerbi.extensibility.visual {
                     }
 
                     tweetContainer.onclick = (ev: MouseEvent) => {
-                        this.selectionManager.select(tweet.selectionId).then((selected) => {
-                            this.currentSelected = [];
+                        this.selectionManager.select(tweet.selectionId).then((selected) => {                            
                             var items = document.querySelectorAll(".tweet-container");
                             if (selected != null && selected.length > 0) {
                                 for (let k = 0; k < items.length; k++) {
