@@ -4,7 +4,7 @@
     "displayName": "Timeline",
     "guid": "tweetlistEC3257599B0A40D19C16301EC2109CDE",
     "visualClassName": "Visual",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "description": "A visualization of the Twitter timeline",
     "supportUrl": "https://www.cloudscope.io/support/timeline",
     "gitHubUrl": "https://github.com/chriswill/PbiTimeline"
@@ -17,7 +17,9 @@
   "assets": {
     "icon": "assets/icon.png"
   },
-  "externalJS": [],
+  "externalJS": [
+    "node_modules/powerbi-visuals-utils-dataviewutils/lib/index.js"
+  ],
   "style": "style/visual.less",
   "capabilities": "capabilities.json",
   "dependencies": "dependencies.json",

@@ -5,5 +5,5 @@
     "powerbi-visuals-utils-dataviewutils": "^1.4.0"
   },
   "repository": "github:chriswill/PbiTimeline",
-  "version": "1.0.7"
+  "version": "1.0.8"
 }

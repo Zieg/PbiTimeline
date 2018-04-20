@@ -187,9 +187,9 @@ module powerbi.extensibility.visual {
                 if (dateColumn || tweet.tweetJson){
                     if (tweet.tweetJson != null){
                         if (tweet.tweetJson.retweetedTweet){
-                            tweet.date = tweet.tweetJson.retweetedTweet.createdDateUTC;                                
+                            tweet.date = new Date(tweet.tweetJson.retweetedTweet.createdDateUTC);                                
                         } else {
-                            tweet.date = tweet.tweetJson.createdDateUTC;
+                            tweet.date = new Date(tweet.tweetJson.createdDateUTC);
                         }
                         
                     } else if (row[dateColumn] != null) {
@@ -628,7 +628,9 @@ module powerbi.extensibility.visual {
                 return "0" + value.toFixed(0);
             }
             return value.toFixed(0);
-        }               
+        }         
+        
+
 
         private formatDate(date: Date) : string {            
             let one_day=1000*60*60*24;
