@@ -6,7 +6,8 @@ module powerbi.extensibility.visual {
     interface ITweetListSettings {
         displayOptions: {
             showQuoted: boolean,
-            showMedia: boolean;
+            showMedia: boolean,
+            showVersion: boolean
         },
         formatOptions: {
             fontSize: number;
@@ -88,7 +89,8 @@ module powerbi.extensibility.visual {
                 let defaultSettings: ITweetListSettings = {
                     displayOptions: {
                         showQuoted: true,
-                        showMedia: false
+                        showMedia: false,
+                        showVersion: false
                     },
                     formatOptions: {
                         fontSize: 12
@@ -100,7 +102,8 @@ module powerbi.extensibility.visual {
                 let currentSettings: ITweetListSettings = {
                     displayOptions: {
                         showMedia: this.getValue<boolean>(objects, "tweetOptions", "showMedia", defaultSettings.displayOptions.showMedia),
-                        showQuoted: this.getValue<boolean>(objects, "tweetOptions", "showQuoted", defaultSettings.displayOptions.showQuoted)
+                        showQuoted: this.getValue<boolean>(objects, "tweetOptions", "showQuoted", defaultSettings.displayOptions.showQuoted),
+                        showVersion: this.getValue<boolean>(objects, "tweetOptions", "showVersion", defaultSettings.displayOptions.showVersion)
                     },
                     formatOptions: {
                         fontSize: this.getValue<number>(objects, "formatting", "fontSize", defaultSettings.formatOptions.fontSize)
@@ -135,115 +138,122 @@ module powerbi.extensibility.visual {
             this.tweets = [];
 
             for (let index = 0; index < rows.length; index++) {
-                const row: DataViewTableRow = rows[index];
 
-                let tweet: ITweet = new Tweet();                
-                tweet.selectionId = this.selectionIds[index];
-                tweet.selected = (this.isSelectionIdInArray(this.currentSelected, tweet.selectionId));
-                
-                if (jsonColumn && row[jsonColumn] != null){                    
-                    tweet.tweetJson = JSON.parse(row[jsonColumn].toString());
-                }                
+                try {
+                    
+                    const row: DataViewTableRow = rows[index];
 
-                if (imageColumn || tweet.tweetJson){
-                    if (tweet.tweetJson != null){
-                        if (tweet.tweetJson.retweetedTweet){
-                            tweet.image = tweet.tweetJson.retweetedTweet.authorProfileImageUrl;
-                        } else {
-                            tweet.image = tweet.tweetJson.authorProfileImageUrl;
+                    let tweet: ITweet = new Tweet();                
+                    tweet.selectionId = this.selectionIds[index];
+                    tweet.selected = (this.isSelectionIdInArray(this.currentSelected, tweet.selectionId));
+                    
+                    if (jsonColumn && row[jsonColumn] != null){                    
+                        tweet.tweetJson = JSON.parse(row[jsonColumn].toString());
+                    }                
+    
+                    if (imageColumn || tweet.tweetJson){
+                        if (tweet.tweetJson != null){
+                            if (tweet.tweetJson.retweetedTweet){
+                                tweet.image = tweet.tweetJson.retweetedTweet.authorProfileImageUrl;
+                            } else {
+                                tweet.image = tweet.tweetJson.authorProfileImageUrl;
+                            }                        
                         }                        
-                    }                        
-                    else if (row[imageColumn] != null){
-                        tweet.image =  row[imageColumn].toString();
+                        else if (row[imageColumn] != null){
+                            tweet.image =  row[imageColumn].toString();
+                        }
                     }
-                }
-
-                if (screenNameColumn || tweet.tweetJson){
-                    if (tweet.tweetJson != null){
-                        if (tweet.tweetJson.retweetedTweet){
-                            tweet.screenName = tweet.tweetJson.retweetedTweet.screenName;
-                        } else {
-                            tweet.screenName = tweet.tweetJson.screenName;
+    
+                    if (screenNameColumn || tweet.tweetJson){
+                        if (tweet.tweetJson != null){
+                            if (tweet.tweetJson.retweetedTweet){
+                                tweet.screenName = tweet.tweetJson.retweetedTweet.screenName;
+                            } else {
+                                tweet.screenName = tweet.tweetJson.screenName;
+                            }                        
                         }                        
-                    }                        
-                    else if (row[screenNameColumn] != null){
-                        tweet.screenName =  row[screenNameColumn].toString();
-                    }
-                }
-
-                if (nameColumn || tweet.tweetJson){
-                    if (tweet.tweetJson != null){
-                        if (tweet.tweetJson.retweetedTweet){
-                            tweet.name = tweet.tweetJson.retweetedTweet.authorName;                                
-                        } else {
-                            tweet.name = tweet.tweetJson.authorName;
+                        else if (row[screenNameColumn] != null){
+                            tweet.screenName =  row[screenNameColumn].toString();
                         }
-                        
-                    } else if (row[nameColumn] != null) {
-                        tweet.name = row[nameColumn].toString();                       
                     }
-                }
-
-                if (dateColumn || tweet.tweetJson){
-                    if (tweet.tweetJson != null){
-                        if (tweet.tweetJson.retweetedTweet){
-                            tweet.date = new Date(tweet.tweetJson.retweetedTweet.createdDateUTC);                                
-                        } else {
-                            tweet.date = new Date(tweet.tweetJson.createdDateUTC);
+    
+                    if (nameColumn || tweet.tweetJson){
+                        if (tweet.tweetJson != null){
+                            if (tweet.tweetJson.retweetedTweet){
+                                tweet.name = tweet.tweetJson.retweetedTweet.authorName;                                
+                            } else {
+                                tweet.name = tweet.tweetJson.authorName;
+                            }
+                            
+                        } else if (row[nameColumn] != null) {
+                            tweet.name = row[nameColumn].toString();                       
                         }
-                        
-                    } else if (row[dateColumn] != null) {
-                        tweet.date = new Date(row[dateColumn].toString());                       
                     }
-                }
-
-                if (textColumn || tweet.tweetJson){                    
-                    if (tweet.tweetJson != null){
-                        if (tweet.tweetJson.retweetedTweet){
-                            tweet.text = tweet.tweetJson.retweetedTweet.text;                                
-                        } else {
-                            tweet.text = tweet.tweetJson.text;
+    
+                    if (dateColumn || tweet.tweetJson){
+                        if (tweet.tweetJson != null){
+                            if (tweet.tweetJson.retweetedTweet){
+                                tweet.date = new Date(tweet.tweetJson.retweetedTweet.createdDateUTC);                                
+                            } else {
+                                tweet.date = new Date(tweet.tweetJson.createdDateUTC);
+                            }
+                            
+                        } else if (row[dateColumn] != null) {
+                            tweet.date = new Date(row[dateColumn].toString());                       
                         }
-                        
-                    } else if (row[textColumn] != null) {
-                        tweet.text = row[textColumn].toString();
                     }
-                }
-
-                if (likesColumn || tweet.tweetJson){
-                    if (tweet.tweetJson != null){
-                        if (tweet.tweetJson.retweetedTweet){
-                            tweet.likes = tweet.tweetJson.retweetedTweet.liked;                                
-                        } else {
-                            tweet.text = tweet.tweetJson.liked;
+    
+                    if (textColumn || tweet.tweetJson){                                          
+                        if (tweet.tweetJson != null){
+                            if (tweet.tweetJson.retweetedTweet){
+                                tweet.text = tweet.tweetJson.retweetedTweet.text;                                
+                            } else {
+                                tweet.text = tweet.tweetJson.text;
+                            }
+                            
+                        } else if (row[textColumn] != null) {
+                            tweet.text = row[textColumn].toString();
                         }
-                        
-                    } else if (row[likesColumn] != null) {
-                        tweet.likes = Number(row[likesColumn]);
                     }
-                }
-
-                if (retweetsColumn || tweet.tweetJson){
-                    if (tweet.tweetJson != null){
-                        if (tweet.tweetJson.retweetedTweet){
-                            tweet.retweets = tweet.tweetJson.retweetedTweet.retweeted;                                
-                        } else {
-                            tweet.retweets = tweet.tweetJson.retweeted;
+    
+                    if (likesColumn || tweet.tweetJson){
+                        if (tweet.tweetJson != null){
+                            if (tweet.tweetJson.retweetedTweet){
+                                tweet.likes = Number(tweet.tweetJson.retweetedTweet.liked);
+                            } else {
+                                tweet.likes = Number(tweet.tweetJson.liked);
+                            }
+                            
+                        } else if (row[likesColumn] != null) {
+                            tweet.likes = Number(row[likesColumn]);
                         }
-                        
-                    } else if (row[textColumn] != null) {
-                        tweet.retweets = Number(row[retweetsColumn]);
                     }
-                }
+    
+                    if (retweetsColumn || tweet.tweetJson){
+                        if (tweet.tweetJson != null){
+                            if (tweet.tweetJson.retweetedTweet){
+                                tweet.retweets = Number(tweet.tweetJson.retweetedTweet.retweeted);
+                            } else {
+                                tweet.retweets = Number(tweet.tweetJson.retweeted);
+                            }
+                            
+                        } else if (row[textColumn] != null) {
+                            tweet.retweets = Number(row[retweetsColumn]);
+                        }
+                    }
+    
+                    if (sentimentColumn){
+                        if (row[sentimentColumn] != null){
+                         tweet.sentiment = Number(row[sentimentColumn]);                        
+                        }
+                    }
+                    
+                    this.tweets.push(tweet);
 
-                if (sentimentColumn){
-                    if (row[sentimentColumn] != null){
-                     tweet.sentiment = Number(row[sentimentColumn]);                        
-                    }
+                } catch (error) {
+                    console.error(error);
                 }
-                
-                this.tweets.push(tweet);
-            }
+            }              
         }
         
         private isSelectionIdInArray(selectionIds: ISelectionId[], selectionId: ISelectionId): boolean {
@@ -264,6 +274,12 @@ module powerbi.extensibility.visual {
             };
 
             let main: HTMLDivElement = document.createElement("div");
+            if (this.settings.displayOptions.showVersion){
+                let version = document.createElement("div");
+                version.setAttribute("class", "version");
+                version.appendChild(document.createTextNode("Timeline by CloudScope, version 1.0.8"));
+                main.appendChild(version);
+            }
 
             let isDeskTop : boolean = window.location.hostname === "pbi.microsoft.com";
 
@@ -464,9 +480,8 @@ module powerbi.extensibility.visual {
                         quoteTweetContainer.appendChild(quoteTweet);
                         tweetContentContainer.appendChild(quoteTweetContainer);
                     }
-    
-                    if (this.settings.displayOptions.showMedia && tweet != null && tweet.tweetJson.media != null) {
                         
+                    if (this.settings.displayOptions.showMedia && tweet.tweetJson && tweet.tweetJson.media) {                        
                         let mediaContainer = document.createElement("div");
                         mediaContainer.setAttribute("class", "media-container");
     
@@ -559,8 +574,8 @@ module powerbi.extensibility.visual {
                     let footerDiv = document.createElement("div");
                     footerDiv.setAttribute("class", "item-footer");
                     footerDiv.setAttribute("style", `font-size: ${this.settings.formatOptions.fontSize}px;`);                    
-                    
-                    if (tweet.retweets) {
+                                   
+                    if (tweet.retweets != undefined) {
                         let divBg = document.createElement("div");
                         divBg.setAttribute("class", "retweet");
                         divBg.setAttribute("style", `height:${this.settings.formatOptions.fontSize}px;width:${this.settings.formatOptions.fontSize+2}px;`);
@@ -571,8 +586,8 @@ module powerbi.extensibility.visual {
                         div.appendChild(document.createTextNode(this.formatNumber(tweet.retweets)));
                         footerDiv.appendChild(div);
                     }
-    
-                    if (tweet.likes) {
+
+                    if (tweet.likes != undefined) {
                         let divBg = document.createElement("div");
                         divBg.setAttribute("class", "like");
                         divBg.setAttribute("style", `height:${this.settings.formatOptions.fontSize}px;width:${this.settings.formatOptions.fontSize + 2}px;`);
@@ -584,7 +599,7 @@ module powerbi.extensibility.visual {
                         footerDiv.appendChild(div);
                     }
                         
-                    if (tweet.sentiment){
+                    if (tweet.sentiment != undefined){
                         let divBg = document.createElement("div");
                         divBg.setAttribute("class", "sentiment");
                         divBg.setAttribute("style", `height:${this.settings.formatOptions.fontSize}px;width:${this.settings.formatOptions.fontSize + 2}px;`);
@@ -610,7 +625,7 @@ module powerbi.extensibility.visual {
                     main.appendChild(tweetContainer); 
                 }
                 catch(e){
-                    console.warn(e);
+                    console.error(e);
                 }                               
             }     
                         
@@ -692,7 +707,8 @@ module powerbi.extensibility.visual {
                         objectName: objectName,
                         properties: {
                             showMedia: this.settings.displayOptions.showMedia,
-                            showQuoted: this.settings.displayOptions.showQuoted
+                            showQuoted: this.settings.displayOptions.showQuoted,
+                            showVersion: this.settings.displayOptions.showVersion
                         },
                         selector: null
                     });

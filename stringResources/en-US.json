@@ -18,6 +18,7 @@
         "optionsMapping": "Column mapping",
         "objectsFieldMapping" : "Field mapping",
         "optionsFormatting": "Formatting",
-        "optionsFontSize": "Font size"
+        "optionsFontSize": "Font size",
+        "optionsShowVersion": "Show version"
     }
 }

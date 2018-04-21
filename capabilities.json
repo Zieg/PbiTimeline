@@ -89,6 +89,13 @@
           "type": {            
             "bool": true
           }
+        },
+        "showVersion": {
+          "displayName": "Show version",
+          "displayNameKey": "optionsShowVersion",
+          "type": {            
+            "bool": true
+          }
         }
       }
     },
