@@ -451,7 +451,7 @@ declare module powerbi {
 
     export interface DataViewValueColumnGroup {
         values: DataViewValueColumn[];
-        identity?: DataViewScopeIdentity;
+        identity?: data.DataRepetitionSelector;
 
         /** The data repetition objects. */
         objects?: DataViewObjects;
@@ -462,7 +462,7 @@ declare module powerbi {
     export interface DataViewValueColumn extends DataViewCategoricalColumn {
         values: PrimitiveValue[];
         highlights?: PrimitiveValue[];
-        identity?: DataViewScopeIdentity;
+        identity?: data.DataRepetitionSelector;
     }
 
     // NOTE: The following is needed for backwards compatibility and should be deprecated.  Callers should use
@@ -472,7 +472,7 @@ declare module powerbi {
 
     export interface DataViewCategoryColumn extends DataViewCategoricalColumn {
         values: PrimitiveValue[];
-        identity?: DataViewScopeIdentity[];
+        identity?: data.DataRepetitionSelector[];
 
         /** The set of expressions that define the identity for instances of the category.  This must match items in the DataViewScopeIdentity in the identity. */
         identityFields?: data.ISQExpr[];
@@ -510,7 +510,7 @@ declare module powerbi {
         values?: { [id: number]: DataViewTreeNodeValue };
 
         children?: DataViewTreeNode[];
-        identity?: DataViewScopeIdentity;
+        identity?: data.DataRepetitionSelector;
 
         /** The data repetition objects. */
         objects?: DataViewObjects;
@@ -534,7 +534,7 @@ declare module powerbi {
     export interface DataViewTable {
         columns: DataViewMetadataColumn[];
 
-        identity?: DataViewScopeIdentity[];
+        identity?: data.DataRepetitionSelector[];
 
         /** The set of expressions that define the identity for rows of the table.  This must match items in the DataViewScopeIdentity in the identity. */
         identityFields?: data.ISQExpr[];
@@ -710,21 +710,6 @@ declare module powerbi.data {
         key: string;
     }
 }
-﻿
-
-declare module powerbi {
-    /** Encapsulates the identity of a data scope in a DataView. */
-    export interface DataViewScopeIdentity {
-        kind: DataRepetitionKind.ScopeIdentity;
-
-        /** Predicate expression that identifies the scope. */
-        expr: data.ISQExpr;
-
-        /** Key string that identifies the DataViewScopeIdentity to a string, which can be used for equality comparison. */
-        key: string;
-    }
-}
-﻿
 
 declare module powerbi.data {
     /** Defines a match against all instances of a given DataView scope. Does not match Subtotals. */
@@ -744,30 +729,12 @@ declare module powerbi.data {
 ﻿
 
 declare module powerbi.data {
-    /** Defines a selector for content, including data-, metadata, and user-defined repetition. */
-    export interface Selector {
-        /** Data-bound repetition selection. */
-        data?: DataRepetitionSelector[];
-
-        /** Metadata-bound repetition selection.  Refers to a DataViewMetadataColumn queryName. */
-        metadata?: string;
-
-        /** User-defined repetition selection. */
-        id?: string;
-    }
-
-    export type DataRepetitionSelector =
-        DataViewScopeIdentity |
-        DataViewScopeWildcard |
-        DataViewRoleWildcard |
-        DataViewScopeTotal;
-		
-	export interface SelectorsByColumn { }
-}
-﻿
-
-declare module powerbi.data {
     //intentionally blank interfaces since this is not part of the public API
+    export interface Selector { }
+
+    export interface SelectorsByColumn { }
+
+    export interface DataRepetitionSelector { }	
 
     export interface ISemanticFilter { }
 
@@ -1287,6 +1254,47 @@ declare module powerbi.extensibility {
 declare module powerbi.extensibility {
     export interface IColorPalette {
         getColor(key: string): IColorInfo;
+        reset(): IColorPalette;
+    }
+    
+    /**
+     * Interface for expanded color palette.
+     * 
+     * isHighContrast: boolean - when true, indicates that high-contrast accesibility support is active. Draw the visual using only foreground and background colors, and clearly visible strokes.
+     * 
+     * Also exposes non-data colors: foreground and variants, background and variants, sentiment indicators (positive, neutral, negative) and some specifc colors (e.g. hyperlink)
+     */
+    export interface ISandboxExtendedColorPalette extends IColorPalette {
+        isHighContrast: boolean;
+        /* foreground variants*/
+        foreground: IColorInfo; /* Also used in High-contrast accessibility mode */
+        foregroundLight: IColorInfo;
+        foregroundDark: IColorInfo;
+        foregroundNeutralLight: IColorInfo;
+        foregroundNeutralDark: IColorInfo;
+        foregroundNeutralSecondary: IColorInfo;
+        foregroundNeutralSecondaryAlt: IColorInfo;
+        foregroundNeutralSecondaryAlt2: IColorInfo;
+        foregroundNeutralTertiary: IColorInfo;
+        foregroundNeutralTertiaryAlt: IColorInfo;
+        foregroundSelected: IColorInfo; /* Used only in High-contrast accessibility mode */
+        foregroundButton: IColorInfo;
+        /* background variants*/
+        background: IColorInfo; /* Also used in High-contrast accessibility mode */
+        backgroundLight: IColorInfo;
+        backgroundNeutral: IColorInfo;
+        backgroundDark: IColorInfo;
+        /* specific purpose colors*/
+        hyperlink: IColorInfo; /* Also used in High-contrast accessibility mode */
+        visitedHyperlink: IColorInfo;
+        mapPushpin: IColorInfo;
+        shapeStroke: IColorInfo;
+        selection?: IColorInfo;
+        separator?: IColorInfo;
+        /* sentiment indicators */
+        negative?: IColorInfo;
+        neutral?: IColorInfo;
+        positive?: IColorInfo;
     }
 }
 
@@ -1354,8 +1362,9 @@ declare module powerbi {
 }
 
 /**
- * Change Log Version 1.11.0
- * Added `selectionManager.registerOnSelectCallback()` method for Report Bookmarks support
+ * Change Log Version 1.13.0
+ *  Expanded `host.colorPalette` now expose a boolean `isHighContrast` flag and several non-data colors 
+ *  including `foreground`, `foregroundSelected`, `background` and `hyperlink` all of which are required for high-contrast accessibility support.
  */
 
 declare module powerbi.extensibility.visual {
@@ -1377,7 +1386,7 @@ declare module powerbi.extensibility.visual {
     export interface IVisualHost extends extensibility.IVisualHost {
         createSelectionIdBuilder: () => visuals.ISelectionIdBuilder;
         createSelectionManager: () => ISelectionManager;
-        colorPalette: IColorPalette;
+        colorPalette: ISandboxExtendedColorPalette;
         persistProperties: (changes: VisualObjectInstancesToPersist) => void;
         applyJsonFilter: (filter: IFilter, objectName: string, propertyName: string, action: FilterAction) => void;
         tooltipService: ITooltipService;
@@ -1386,6 +1395,7 @@ declare module powerbi.extensibility.visual {
         locale: string;
         allowInteractions: boolean;
         launchUrl: (url: string) => void;
+        fetchMoreData: () => boolean;
         instanceId: string;
         refreshHostData: () => void;
         createLocalizationManager: () => ILocalizationManager;
@@ -1397,6 +1407,7 @@ declare module powerbi.extensibility.visual {
         type: VisualUpdateType;
         viewMode?: ViewMode;
         editMode?: EditMode;
+        operationKind?: VisualDataChangeOperationKind;
     }
 
     export interface VisualConstructorOptions extends extensibility.VisualConstructorOptions {

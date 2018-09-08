@@ -76,11 +76,14 @@ module powerbi.extensibility.visual {
 
         public update(options: VisualUpdateOptions) {            
             
-            this.selectionIds = this.getSelectionIds(options.dataViews[0], this.host);
+            debugger;
 
             var dataView: DataView = this.dataView = options.dataViews[0];
 
             if (dataView != null && dataView.table != null) {
+                
+                this.selectionIds = this.getSelectionIds(options.dataViews[0], this.host);
+
                 let table: DataViewTable = dataView.table;
                 this.target.style.overflowY = "auto";
 
@@ -118,7 +121,8 @@ module powerbi.extensibility.visual {
             }
         }        
 
-        private loadData(): void {            
+        private loadData(): void {                       
+
             let table: DataViewTable = this.dataView.table;
             let columns: DataViewMetadataColumn[] = table.columns;
             let rows = table.rows;
@@ -277,7 +281,7 @@ module powerbi.extensibility.visual {
             if (this.settings.displayOptions.showVersion){
                 let version = document.createElement("div");
                 version.setAttribute("class", "version");
-                version.appendChild(document.createTextNode("Timeline by CloudScope, version 1.0.8"));
+                version.appendChild(document.createTextNode("Timeline by CloudScope, version 1.1.0"));
                 main.appendChild(version);
             }
 
@@ -757,15 +761,26 @@ module powerbi.extensibility.visual {
          * @param host 
          */
         private getSelectionIds(dataView: DataView, host: IVisualHost): ISelectionId[] {
-            return dataView.table.identity.map((identity: DataViewScopeIdentity) => {
+            
+            if (dataView.table.identity === undefined){
+                return [];
+            }
+
+            const queryName: string = dataView.table.columns[0].queryName;
+
+            return dataView.table.identity.map((identity: data.DataRepetitionSelector) => {
                 const categoryColumn: DataViewCategoryColumn = {
-                    source: dataView.table.columns[0],
+                    source: {
+                        queryName,
+                        displayName: null
+                    },
                     values: null,
                     identity: [identity]
                 };
 
                 return host.createSelectionIdBuilder()
                     .withCategory(categoryColumn, 0)
+                    .withMeasure(queryName)
                     .createSelectionId();
             });
         }
