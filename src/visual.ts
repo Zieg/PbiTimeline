@@ -74,9 +74,7 @@ module powerbi.extensibility.visual {
             );                           
         }
 
-        public update(options: VisualUpdateOptions) {            
-            
-            debugger;
+        public update(options: VisualUpdateOptions) {                                
 
             var dataView: DataView = this.dataView = options.dataViews[0];
 
